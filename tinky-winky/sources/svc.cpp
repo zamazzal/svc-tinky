@@ -533,6 +533,7 @@ int main(int argc, char **argv)
         }
         else if (strcmp(action, "delete") == 0)
         {
+            SvcStop();
             SvcDelete();
         }
         else
