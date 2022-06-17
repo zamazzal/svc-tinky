@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="sources\svc.cpp" />
     <ClCompile Include="sources\tinky.cpp" />
+    <ClCompile Include="sources\winkey.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\svc.hpp" />

