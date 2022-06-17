@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{57c1b851-93be-4a38-b849-76a024c1a5c9}</ProjectGuid>
-    <RootNamespace>tinkywinkey</RootNamespace>
+    <RootNamespace>tinky-winkey</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

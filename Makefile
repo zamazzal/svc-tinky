@@ -1,4 +1,4 @@
-PATH = C:\Users\Public\winkey.exe
+KEYLOGGER_PATH = C:\Users\Public\winkey.exe
 
 all: svc tinky winkey
 
@@ -18,7 +18,7 @@ tinky: tinky.obj
 	link.exe ./tinky.obj /OUT:tinky.exe
 
 winkey: winkey.obj
-	link.exe ./winkey.obj /OUT:$(PATH)
+	link.exe ./winkey.obj /OUT:$(KEYLOGGER_PATH)
 
 clean:
 	del svc.obj
@@ -28,6 +28,6 @@ clean:
 fclean: clean
 	del svc.exe
 	del tinky.exe
-	del $(PATH)
+	del $(KEYLOGGER_PATH)
 
 re: fclean all
