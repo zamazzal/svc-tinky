@@ -3,10 +3,10 @@ PATH = C:\Users\Public\winkey.exe
 all: svc tinky winkey
 
 svc.obj:
-	cl.exe /WX /Wall ./tinky-winkey/sourcessvc.cpp
+	cl.exe /WX /Wall ./tinky-winkey/sources/svc.cpp
 
 tinky.obj:
-	cl.exe /WX /Wall ./tinky-winkey/sourcestinky.cpp
+	cl.exe /WX /Wall ./tinky-winkey/sources/tinky.cpp
 
 winkey.obj:
 	cl.exe /WX /Wall ./tinky-winkey/sources/winkey.cpp
