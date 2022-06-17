@@ -15,7 +15,7 @@
 
 #pragma comment(lib, "advapi32.lib")
 
-LPSTR wszCommand = "./winkey.exe";
+LPSTR wszCommand = "C:\\Users\\Public\\winkey.exe";
 
 SERVICE_STATUS        g_ServiceStatus = { 0 };
 SERVICE_STATUS_HANDLE g_StatusHandle = NULL;

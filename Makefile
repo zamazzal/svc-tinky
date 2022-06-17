@@ -1,13 +1,15 @@
+PATH = C:\Users\Public\winkey.exe
+
 all: svc tinky winkey
 
 svc.obj:
-  cl.exe /WX /Wall .\tinky-winky\sources\svc.cpp
+  cl.exe /WX /Wall .\tinky-winkey\sources\svc.cpp
 
 tinky.obj:
-  cl.exe /WX /Wall .\tinky-winky\sources\tinky.cpp
+  cl.exe /WX /Wall .\tinky-winkey\sources\tinky.cpp
 
 winkey.obj:
-	cl.exe /WX /Wall .\tinky-winky\sources\winkey.cpp
+	cl.exe /WX /Wall .\tinky-winkey\sources\winkey.cpp
 
 
 
@@ -18,7 +20,7 @@ tinky: tinky.obj
 	link.exe ./tinky.obj /OUT:tinky.exe
 
 winkey: winkey.obj
-	link.exe ./winkey.obj /OUT:winkey.exe
+	link.exe ./winkey.obj /OUT:$(PATH)
 
 
 
@@ -30,6 +32,6 @@ clean:
 fclean: clean
 	del svc.exe
 	del tinky.exe
-	del winkey.exe
+	del $(PATH)
 
 re: fclean all
